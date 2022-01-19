@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import org.generation.blogPessoal.model.Postagem;
+import org.generation.blogPessoal.models.Postagem;
 import org.generation.blogPessoal.repositories.PostagemRepository;
-import org.hibernate.hql.spi.id.inline.IdsClauseBuilder;
 
 @RestController
 @RequestMapping("/postagens")
