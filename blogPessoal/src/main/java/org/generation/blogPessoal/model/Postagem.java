@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 
 
 @Entity
-@Table(name = "postagem")
+@Table(name = "tb_postagens")
 public class Postagem {
 	
 	@Id
