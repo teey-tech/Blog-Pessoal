@@ -38,15 +38,6 @@ public class PostagemController {
 		});
 	}
 	
-	@GetMapping("/{titulo}")
-	public ResponseEntity<Postagem> getId(@PathVariable String titulo){
-		return repository.getByTitulo(titulo).map(resp -> {
-			return ResponseEntity.status(200).body(resp);
-		}).orElseGet(() -> {
-			return ResponseEntity.status(404).build();
-		});
-	}
-	
 	@RequestMapping(value = "/titulo/{titulo}", method = RequestMethod.GET)
 	public ResponseEntity<Postagem> getByTitle(@RequestParam(value="titulo") String titulo){
 		return repository.getByTitulo(titulo).map(resp -> {
