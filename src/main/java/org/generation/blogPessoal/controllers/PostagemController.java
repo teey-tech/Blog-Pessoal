@@ -58,7 +58,13 @@ public class PostagemController {
 	//Select a single information and show
 	@GetMapping("/titulo/{titulo}")
 	public ResponseEntity<List<Postagem>> getByName(@PathVariable String titulo){
-		return ResponseEntity.ok(repository.findAllByTituloContainingIgnoreCase(titulo));
+		List<Postagem> title = repository.findAllByTituloContainingIgnoreCase(titulo);
+		
+		if(title.isEmpty()) {
+			return ResponseEntity.status(204).build();
+		}else {
+			return ResponseEntity.status(200).body(title);
+		}
 	}
 	
 //	@GetMapping(value = "/titulo/{titulo}")

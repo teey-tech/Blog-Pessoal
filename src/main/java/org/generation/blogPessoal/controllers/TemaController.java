@@ -53,7 +53,14 @@ public class TemaController {
 	
 	@GetMapping("/desc/{descricao}")
 	public ResponseEntity<List<Tema>> getByDesc(@PathVariable String descricao){
-		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(descricao));
+		List<Tema> titulo = repository.findAllByDescricaoContainingIgnoreCase(descricao);
+		
+		if(titulo.isEmpty()) {
+			return ResponseEntity.status(204).build();
+		}else {
+			return ResponseEntity.status(200).body(titulo);
+		}
+		
 	}
 	
 	@PostMapping("/save")
