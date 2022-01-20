@@ -14,11 +14,8 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
 
 	public List<Postagem> findAll();
 
-	public Optional<Postagem> getByTitulo(String titulo);
-
-
-	
-
+//	public Optional<Postagem> getByTitulo(String titulo);
 
 	
+
 }
