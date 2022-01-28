@@ -22,6 +22,16 @@ import javax.validation.Valid;
 import org.generation.blogPessoal.models.Postagem;
 import org.generation.blogPessoal.repositories.PostagemRepository;
 
+/**
+ * Criando o Controller de Postagem.
+ * Creating Controller Postagem.
+ * 
+ * @author Thiago Batista
+ * @since 28/01/2022
+ * @version 1.0
+ * 
+ */
+
 @RestController
 @RequestMapping("/postagens")
 @CrossOrigin("*")
@@ -29,85 +39,124 @@ public class PostagemController {
 
 	@Autowired
 	private PostagemRepository repository;
-	
-	
-	//Select All information from the database containing the ID 
+
+	/**
+	 * Seleciona todas as informações de Postagem no banco de dados.
+	 * Select All information from the database Postagem.
+	 * 
+	 * @author Thiago Batista
+	 * @since 28/01/2022
+	 * @version 1.0
+	 * 
+	 */
+
 	@GetMapping
-	public ResponseEntity<List<Postagem>> getAll(){
+	public ResponseEntity<List<Postagem>> getAll() {
 		List<Postagem> list = repository.findAll();
-		
-		if(list.isEmpty()) {
+
+		if (list.isEmpty()) {
 			return ResponseEntity.status(204).build();
-		}else {
+		} else {
 			return ResponseEntity.status(201).body(list);
 		}
-		
+
 	}
-	
-	
-	//Select a single information from the database containing the ID 
+
+	/**
+	 * Seleciona todas as informações que contem esse ID.
+	 * Select a single information from the database containing the ID
+	 * 
+	 * @author Thiago Batista
+	 * @since 28/01/2022
+	 * @version 1.0
+	 * 
+	 */
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Postagem> getId(@PathVariable Long id){
+	public ResponseEntity<Postagem> getId(@PathVariable Long id) {
 		return repository.findById(id).map(resp -> {
 			return ResponseEntity.status(200).body(resp);
 		}).orElseGet(() -> {
 			return ResponseEntity.status(404).build();
 		});
 	}
-	
-	//Select a single information and show
+
+	/**
+	 * Seleciona Todas as informações baseado no nome do titulo.
+	 * Get all information based on the name of the title.
+	 * 
+	 * @author Thiago Batista
+	 * @since 28/01/2022
+	 * @version 1.0
+	 * 
+	 */
+
 	@GetMapping("/titulo/{titulo}")
-	public ResponseEntity<List<Postagem>> getByName(@PathVariable String titulo){
+	public ResponseEntity<List<Postagem>> getByName(@PathVariable String titulo) {
 		List<Postagem> title = repository.findAllByTituloContainingIgnoreCase(titulo);
-		
-		if(title.isEmpty()) {
+
+		if (title.isEmpty()) {
 			return ResponseEntity.status(204).build();
-		}else {
+		} else {
 			return ResponseEntity.status(200).body(title);
 		}
 	}
-	
-//	@GetMapping(value = "/titulo/{titulo}")
-//	public ResponseEntity<Postagem> getByTitle(@PathVariable(value="titulo") String titulo){
-//		return repository.getByTitulo(titulo).map(resp -> {
-//			return ResponseEntity.status(200).body(resp);
-//		}).orElseGet(() -> {
-//			return ResponseEntity.status(404).build();
-//		});
-//	}
-			
-		
-	//CRUD
-	//Insert information in DB	
+
+	/**
+	 * Insere informação no Banco de dados.
+	 * Insert information in DB.
+	 * 
+	 * @author Thiago Batista
+	 * @since 28/01/2022
+	 * @version 1.0
+	 * 
+	 */
+
 	@PostMapping("/save")
-	public  ResponseEntity<Postagem> savePost(@Valid  @RequestBody Postagem newPost) {
-		return  ResponseEntity.status(201).body(repository.save(newPost));
+	public ResponseEntity<Postagem> savePost(@Valid @RequestBody Postagem newPost) {
+		return ResponseEntity.status(201).body(repository.save(newPost));
 	}
-	
-	
-	//Update a information on DB by ID
+
+	/**
+	 * Atualiza informação no banco de dados.
+	 * Update a information on DB by ID.
+	 * 
+	 * @author Thiago Batista
+	 * @since 28/01/2022
+	 * @version 1.0
+	 * 
+	 */
+
 	@PutMapping("/update")
-	public  ResponseEntity<Postagem> updatePost(@Valid @RequestBody Postagem updatePost) {
+	public ResponseEntity<Postagem> updatePost(@Valid @RequestBody Postagem updatePost) {
 		return repository.findById(updatePost.getId()).map(record -> {
-			return  ResponseEntity.status(201).body(repository.save(updatePost));
+			return ResponseEntity.status(201).body(repository.save(updatePost));
 		}).orElseGet(() -> {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id não encontrado");
 		});
 	}
-	
-	
-	//delete Post on DB by id
+
+	/**
+	 * Deleta a informação baseado no ID informado.
+	 * delete the information based on ID that is informed.
+	 * 
+	 * @author Thiago Batista
+	 * @since 28/01/2022
+	 * @version 1.0
+	 * 
+	 */
+
 	@SuppressWarnings("rawtypes")
-	@DeleteMapping(value="/delete/{id}")
+	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity deletePost(@PathVariable("id") long id) {
 		Optional<Postagem> optional = repository.findById(id);
 		if (optional.isPresent()) {
 			repository.deleteById(id);
 			return ResponseEntity.status(200).build();
-			
-		}else {
+
+		} else {
 			return ResponseEntity.status(404).build();
 		}
 	}
-	
+
 }

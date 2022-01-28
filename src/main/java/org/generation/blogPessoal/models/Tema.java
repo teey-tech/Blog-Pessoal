@@ -13,18 +13,28 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Criando o Model Tema.
+ * Creating Model Tema.
+ * 
+ * @author Thiago Batista
+ * @since 28/01/2022
+ * @version 1.0
+ * 
+ */
+
 @Entity
 @Table(name = "tb_temas")
 public class Tema {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	@NotNull
 	private String descricao;
-	
-	@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "tema", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("tema")
 	private List<Postagem> postagem;
 
