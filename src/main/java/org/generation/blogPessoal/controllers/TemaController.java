@@ -90,9 +90,9 @@ public class TemaController {
 	 * 
 	 */
 
-	@GetMapping("/desc/{descricao}")
-	public ResponseEntity<List<Tema>> getByDesc(@PathVariable String descricao) {
-		List<Tema> titulo = repository.findAllByDescricaoContainingIgnoreCase(descricao);
+	@GetMapping("/nome-tema/{nomeTema}")
+	public ResponseEntity<List<Tema>> getByDesc(@PathVariable String nomeTema) {
+		List<Tema> titulo = repository.findAllByNomeTemaContainingIgnoreCase(nomeTema);
 
 		if (titulo.isEmpty()) {
 			return ResponseEntity.status(204).build();
