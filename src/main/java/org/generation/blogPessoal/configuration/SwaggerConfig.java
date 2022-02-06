@@ -24,15 +24,14 @@ public class SwaggerConfig {
             .description("Projeto Blog Pessoal - Generation Brasil")
             .version("v0.0.1")
             .license(new License()
-                .name("generation.org.br")
-                .url("http://springdoc.org"))
+                .name("Gees Brazil")
+                .url("<https://brazil.generation.org/>"))
             .contact(new Contact()
-                .name("Thiago Batista")
-                .url("https://github.com/teey-tech/")
-                .email("thiagobatistadg@hotmail.com")))
+                .name("Github - Thiago")
+                .url("<https://github.com/teey-tech/>")))
         .externalDocs(new ExternalDocumentation()
-            .description("Github")
-            .url("https://github.com/teey-tech/Blog-Pessoal/"));
+            .description("Github - Projeto")
+            .url("<https://github.com/teey-tech/Blog-Pessoal/>"));
   }
 
   @Bean

@@ -1,21 +1,43 @@
 package org.generation.blogPessoal.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.generation.blogPessoal.models.Usuario;
+import org.generation.blogPessoal.models.UsuarioModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
- * Criando o Repositorio de Usuario.
  * Creating Repository Usuario.
  * 
  * @author Thiago Batista
  * @since 28/01/2022
  * @version 1.0
- * 
+ * @see UsuarioModel
+ * @see UsuarioController
  */
+@Repository
+public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+  /**
+   * Method responsible for find user by email
+   * 
+   * @author Thiago Batista
+   * @since 06/02/2022
+   * @version 1.0
+   * @param usuario
+   * @return Optional<UsuarioModel>
+   */
+  public Optional<UsuarioModel> findByUsuario(String usuario);
 
-  public Optional<Usuario> findByUsuario(String usuario);
+  /**
+   * Method responsible for find user by nome
+   * 
+   * @author Thiago Batista
+   * @since 06/02/2022
+   * @version 1.0
+   * @param nome
+   * @return List<UsuarioModel>
+   */
+  public List<UsuarioModel> findAllByNomeContainingIgnoreCase(String nome);
 }

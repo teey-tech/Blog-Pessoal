@@ -1,27 +1,34 @@
-package org.generation.blogPessoal.models;
+package org.generation.blogPessoal.dtos;
 
 /**
- * Criando o Model UserLogin.
- * Que sera usado para checar as informações de Login.
- * 
- * Creating model UserLogin.
- * Is going to be used to check the information on a login try.
+ * Class responsible for DTO Usuariologin.
  * 
  * @author Thiago Batista
- * @since 28/01/2022
+ * @since 06/02/2022
  * @version 1.0
- * 
+ * @see UsuarioModel
  */
+public class UsuarioLoginDTO {
 
-public class UserLogin {
+  private Long id;
 
   private String nome;
 
   private String usuario;
 
+  private String foto;
+
   private String senha;
 
   private String token;
+
+  public Long getId() {
+    return this.id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getNome() {
     return this.nome;
@@ -37,6 +44,14 @@ public class UserLogin {
 
   public void setUsuario(String usuario) {
     this.usuario = usuario;
+  }
+
+  public String getFoto() {
+    return this.foto;
+  }
+
+  public void setFoto(String foto) {
+    this.foto = foto;
   }
 
   public String getSenha() {

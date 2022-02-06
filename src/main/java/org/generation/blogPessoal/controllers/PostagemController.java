@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,29 +20,27 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.generation.blogPessoal.models.Postagem;
+import org.generation.blogPessoal.models.PostagemModel;
 import org.generation.blogPessoal.repositories.PostagemRepository;
 
 /**
- * Criando o Controller de Postagem.
  * Creating Controller Postagem.
  * 
  * @author Thiago Batista
  * @since 28/01/2022
  * @version 1.0
- * 
+ * @see PostagemModel
+ * @see PostagemRepository
  */
-
 @RestController
 @RequestMapping("/postagens")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostagemController {
 
 	@Autowired
 	private PostagemRepository repository;
 
 	/**
-	 * Seleciona todas as informações de Postagem no banco de dados.
 	 * Select All information from the database Postagem.
 	 * 
 	 * @author Thiago Batista
@@ -49,114 +48,84 @@ public class PostagemController {
 	 * @version 1.0
 	 * 
 	 */
-
 	@GetMapping
-	public ResponseEntity<List<Postagem>> getAll() {
-		List<Postagem> list = repository.findAll();
-
-		if (list.isEmpty()) {
-			return ResponseEntity.status(204).build();
-		} else {
-			return ResponseEntity.status(201).body(list);
-		}
-
+	public ResponseEntity<List<PostagemModel>> getAll() {
+		return ResponseEntity.ok(repository.findAll());
 	}
 
 	/**
-	 * Seleciona todas as informações que contem esse ID.
-	 * Select a single information from the database containing the ID
+	 * Select a single information from the database containing the ID.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param id
 	 */
-
 	@GetMapping("/{id}")
-	public ResponseEntity<Postagem> getId(@PathVariable Long id) {
-		return repository.findById(id).map(resp -> {
-			return ResponseEntity.status(200).body(resp);
-		}).orElseGet(() -> {
-			return ResponseEntity.status(404).build();
-		});
+	public ResponseEntity<PostagemModel> getById(@PathVariable long id) {
+		return repository.findById(id).map(resp -> ResponseEntity.ok(resp))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 
 	/**
-	 * Seleciona Todas as informações baseado no nome do titulo.
 	 * Get all information based on the name of the title.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param titulo
 	 */
-
 	@GetMapping("/titulo/{titulo}")
-	public ResponseEntity<List<Postagem>> getByName(@PathVariable String titulo) {
-		List<Postagem> title = repository.findAllByTituloContainingIgnoreCase(titulo);
-
-		if (title.isEmpty()) {
-			return ResponseEntity.status(204).build();
-		} else {
-			return ResponseEntity.status(200).body(title);
-		}
+	public ResponseEntity<List<PostagemModel>> getByTitle(@PathVariable String titulo) {
+		return ResponseEntity.ok(repository.findAllByTituloContainingIgnoreCase(titulo));
 	}
 
 	/**
-	 * Insere informação no Banco de dados.
-	 * Insert information in DB.
+	 * Save information on database.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param postagem
 	 */
-
-	@PostMapping("/save")
-	public ResponseEntity<Postagem> savePost(@Valid @RequestBody Postagem newPost) {
-		return ResponseEntity.status(201).body(repository.save(newPost));
+	@PostMapping
+	public ResponseEntity<PostagemModel> post(@Valid @RequestBody PostagemModel postagem) {
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(repository.save(postagem));
 	}
 
 	/**
-	 * Atualiza informação no banco de dados.
-	 * Update a information on DB by ID.
+	 * Update a information on database.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param postagem
 	 */
-
-	@PutMapping("/update")
-	public ResponseEntity<Postagem> updatePost(@Valid @RequestBody Postagem updatePost) {
-		return repository.findById(updatePost.getId()).map(record -> {
-			return ResponseEntity.status(201).body(repository.save(updatePost));
-		}).orElseGet(() -> {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id não encontrado");
-		});
+	@PutMapping
+	public ResponseEntity<PostagemModel> put(@Valid @RequestBody PostagemModel postagem) {
+		return repository.findById(postagem.getId())
+				.map(resp -> ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem)))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 
 	/**
-	 * Deleta a informação baseado no ID informado.
-	 * delete the information based on ID that is informed.
+	 * Delete the information based on ID that is informed.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param id
 	 */
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable long id) {
+		Optional<PostagemModel> post = repository.findById(id);
 
-	@SuppressWarnings("rawtypes")
-	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity deletePost(@PathVariable("id") long id) {
-		Optional<Postagem> optional = repository.findById(id);
-		if (optional.isPresent()) {
-			repository.deleteById(id);
-			return ResponseEntity.status(200).build();
+		if (post.isEmpty())
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-		} else {
-			return ResponseEntity.status(404).build();
-		}
+		repository.deleteById(id);
 	}
 
 }

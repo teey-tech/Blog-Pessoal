@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.generation.blogPessoal.models.Tema;
+import org.generation.blogPessoal.models.TemaModel;
 import org.generation.blogPessoal.repositories.TemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,17 +18,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * Criando o Controller de Tema.
  * Creating Controller Tema.
  * 
  * @author Thiago Batista
  * @since 28/01/2022
  * @version 1.0
- * 
+ * @see TemaModel
+ * @see TemaRepository
  */
 
 @RestController
@@ -41,7 +42,6 @@ public class TemaController {
 	private TemaRepository repository;
 
 	/**
-	 * Seleciona todas as informações de Tema no banco de dados.
 	 * Select All information from the database Tema.
 	 * 
 	 * @author Thiago Batista
@@ -49,113 +49,84 @@ public class TemaController {
 	 * @version 1.0
 	 * 
 	 */
-
 	@GetMapping
-	public ResponseEntity<List<Tema>> getAll() {
-		List<Tema> list = repository.findAll();
-
-		if (list.isEmpty()) {
-			return ResponseEntity.status(204).build();
-		} else {
-			return ResponseEntity.status(201).body(list);
-		}
+	public ResponseEntity<List<TemaModel>> getAll() {
+		return ResponseEntity.ok(repository.findAll());
 	}
 
 	/**
-	 * Seleciona todas as informações que contem esse ID.
 	 * Select a single information from the database containing the ID
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param id
 	 */
-
 	@GetMapping("/{id}")
-	public ResponseEntity<Tema> getById(@PathVariable Long id) {
-		return repository.findById(id).map(resp -> {
-			return ResponseEntity.status(200).body(resp);
-		}).orElseGet(() -> {
-			return ResponseEntity.status(404).build();
-		});
+	public ResponseEntity<TemaModel> getById(@PathVariable long id) {
+		return repository.findById(id).map(resp -> ResponseEntity.ok(resp))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 
 	/**
-	 * Seleciona Todas as informações baseado no nome da Descrição.
 	 * Get all information based on the name of the Description.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param descricao
 	 */
 
-	@GetMapping("/nome-tema/{nomeTema}")
-	public ResponseEntity<List<Tema>> getByDesc(@PathVariable String nomeTema) {
-		List<Tema> titulo = repository.findAllByNomeTemaContainingIgnoreCase(nomeTema);
-
-		if (titulo.isEmpty()) {
-			return ResponseEntity.status(204).build();
-		} else {
-			return ResponseEntity.status(200).body(titulo);
-		}
-
+	@GetMapping("/descricao/{descricao}")
+	public ResponseEntity<List<TemaModel>> getByTitle(@PathVariable String descricao) {
+		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(descricao));
 	}
 
 	/**
-	 * Insere informação no Banco de dados.
-	 * Insert information in DB.
+	 * Save information in database.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param tema
 	 */
-
-	@PostMapping("/save")
-	public ResponseEntity<Tema> savePost(@Valid @RequestBody Tema tema) {
-		return ResponseEntity.status(201).body(repository.save(tema));
+	@PostMapping
+	public ResponseEntity<TemaModel> post(@Valid @RequestBody TemaModel tema) {
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(repository.save(tema));
 	}
 
 	/**
-	 * Atualiza informação no banco de dados.
-	 * Update a information on DB by ID.
+	 * Update a information on database.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param tema
 	 */
-
-	@PutMapping("/update")
-	public ResponseEntity<Tema> updatePost(@Valid @RequestBody Tema tema) {
-		return repository.findById(tema.getId()).map(record -> {
-			return ResponseEntity.status(201).body(repository.save(tema));
-		}).orElseGet(() -> {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id não encontrado");
-		});
+	@PutMapping
+	public ResponseEntity<TemaModel> put(@Valid @RequestBody TemaModel tema) {
+		return repository.findById(tema.getId())
+				.map(resp -> ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema)))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 
 	/**
-	 * Deleta a informação baseado no ID informado.
-	 * delete the information based on ID that is informed.
+	 * Delete the information based on database that is informed.
 	 * 
 	 * @author Thiago Batista
 	 * @since 28/01/2022
 	 * @version 1.0
-	 * 
+	 * @param id
 	 */
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable long id) {
+		Optional<TemaModel> tema = repository.findById(id);
 
-	@SuppressWarnings("rawtypes")
-	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity deletePost(@PathVariable("id") long id) {
-		Optional<Tema> optional = repository.findById(id);
-		if (optional.isPresent()) {
-			repository.deleteById(id);
-			return ResponseEntity.status(200).build();
+		if (tema.isEmpty())
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-		} else {
-			return ResponseEntity.status(404).build();
-		}
+		repository.deleteById(id);
 	}
 }

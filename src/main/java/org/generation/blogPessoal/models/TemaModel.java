@@ -20,45 +20,45 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @author Thiago Batista
  * @since 28/01/2022
  * @version 1.0
- * 
+ * @see TemaRepository
+ * @see TemaController
  */
-
 @Entity
 @Table(name = "tb_temas")
-public class Tema {
+public class TemaModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@NotNull
-	private String nomeTema;
+	@NotNull(message = "O atributo Descrição é obrigatório")
+	private String descricao;
 
 	@OneToMany(mappedBy = "tema", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("tema")
-	private List<Postagem> postagem;
+	private List<PostagemModel> postagem;
 
 	public long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	public String getNomeTema() {
-		return this.nomeTema;
+	public String getDescricao() {
+		return this.descricao;
 	}
 
-	public void setNomeTema(String nomeTema) {
-		this.nomeTema = nomeTema;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public List<Postagem> getPostagem() {
-		return postagem;
+	public List<PostagemModel> getPostagem() {
+		return this.postagem;
 	}
 
-	public void setPostagem(List<Postagem> postagem) {
+	public void setPostagem(List<PostagemModel> postagem) {
 		this.postagem = postagem;
 	}
 

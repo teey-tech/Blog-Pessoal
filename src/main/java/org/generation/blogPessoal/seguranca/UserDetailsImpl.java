@@ -1,36 +1,39 @@
 package org.generation.blogPessoal.seguranca;
 
 import java.util.Collection;
+import java.util.List;
 
-import org.generation.blogPessoal.models.Usuario;
+import org.generation.blogPessoal.models.UsuarioModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Criando o Arquivo que cuidara dos detalhes.
- * Creating the archive that is going to handle the details.
+ * Class responsible for charge user details in security spring
  * 
  * @author Thiago Batista
- * @since 28/01/2022
+ * @since 06/02/2022
  * @version 1.0
- * 
+ * @see UserDetails
+ * @see UsuarioModel
+ * @see UserDetailsImplements
+ * @see UserDetailsServiceImplement
  */
-
 public class UserDetailsImpl implements UserDetails {
 
   private static final long serialVersionUID = 1l;
 
   private String userName;
   private String password;
+  private List<GrantedAuthority> authorities;
 
-  public UserDetailsImpl(Usuario user) {
+  public UserDetailsImpl(UsuarioModel user) {
     this.userName = user.getUsuario();
     this.password = user.getSenha();
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return authorities;
   }
 
   @Override
