@@ -37,9 +37,6 @@ public class TemaModel {
 	@NotNull(message = "O atributo Descrição é obrigatório")
 	private String descricao;
 
-	@UpdateTimestamp
-	private LocalDate data;
-
 	@OneToMany(mappedBy = "tema", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("tema")
 	private List<PostagemModel> postagem;

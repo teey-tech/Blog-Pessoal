@@ -31,7 +31,6 @@ import org.springframework.web.server.ResponseStatusException;
  * @see TemaModel
  * @see TemaRepository
  */
-
 @RestController
 @RequestMapping("/temas")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
