@@ -88,7 +88,7 @@ public class PostagemController {
 	 * @version 1.0
 	 * @param postagem
 	 */
-	@PostMapping
+	@PostMapping("/cadastrar")
 	public ResponseEntity<PostagemModel> post(@Valid @RequestBody PostagemModel postagem) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(repository.save(postagem));
@@ -102,7 +102,7 @@ public class PostagemController {
 	 * @version 1.0
 	 * @param postagem
 	 */
-	@PutMapping
+	@PutMapping("/atualizar")
 	public ResponseEntity<PostagemModel> put(@Valid @RequestBody PostagemModel postagem) {
 		return repository.findById(postagem.getId())
 				.map(resp -> ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem)))
@@ -118,7 +118,7 @@ public class PostagemController {
 	 * @param id
 	 */
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable long id) {
 		Optional<PostagemModel> post = repository.findById(id);
 

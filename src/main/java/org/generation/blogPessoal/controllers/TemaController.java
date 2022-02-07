@@ -90,7 +90,7 @@ public class TemaController {
 	 * @version 1.0
 	 * @param tema
 	 */
-	@PostMapping
+	@PostMapping("/cadastrar")
 	public ResponseEntity<TemaModel> post(@Valid @RequestBody TemaModel tema) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(repository.save(tema));
@@ -104,7 +104,7 @@ public class TemaController {
 	 * @version 1.0
 	 * @param tema
 	 */
-	@PutMapping
+	@PutMapping("/atualizar")
 	public ResponseEntity<TemaModel> put(@Valid @RequestBody TemaModel tema) {
 		return repository.findById(tema.getId())
 				.map(resp -> ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema)))
@@ -120,7 +120,7 @@ public class TemaController {
 	 * @param id
 	 */
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable long id) {
 		Optional<TemaModel> tema = repository.findById(id);
 
