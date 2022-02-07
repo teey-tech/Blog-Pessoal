@@ -34,7 +34,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/temas")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-
 public class TemaController {
 
 	@Autowired

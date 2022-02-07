@@ -1,6 +1,5 @@
 package org.generation.blogPessoal.models;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,8 +12,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * Criando o Model Tema.
@@ -32,7 +29,7 @@ public class TemaModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@NotNull(message = "O atributo Descrição é obrigatório")
 	private String descricao;
