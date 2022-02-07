@@ -88,7 +88,7 @@ public class TemaController {
 	 * @version 1.0
 	 * @param tema
 	 */
-	@PostMapping("/cadastrar")
+	@PostMapping
 	public ResponseEntity<TemaModel> post(@Valid @RequestBody TemaModel tema) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(repository.save(tema));
@@ -102,7 +102,7 @@ public class TemaController {
 	 * @version 1.0
 	 * @param tema
 	 */
-	@PutMapping("/atualizar")
+	@PutMapping
 	public ResponseEntity<TemaModel> put(@Valid @RequestBody TemaModel tema) {
 		return repository.findById(tema.getId())
 				.map(resp -> ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema)))

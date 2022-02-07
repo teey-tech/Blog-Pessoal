@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Criando o Model Tema.
  * Creating Model Tema.
  * 
  * @author Thiago Batista
