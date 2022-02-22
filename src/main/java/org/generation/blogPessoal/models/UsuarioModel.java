@@ -39,6 +39,8 @@ public class UsuarioModel {
   @Size(max = 5000, message = "o link da foto não pode ser maior do que 5000 caractéres")
   private String foto;
 
+  private String tipo;
+
   @NotNull(message = "O atributo Usuário é Obrigatório!")
   @Email(message = "O Atributo Usuário deve ser um email válido")
   private String usuario;
@@ -51,10 +53,11 @@ public class UsuarioModel {
   @JsonIgnoreProperties("usuario")
   private List<PostagemModel> postagem;
 
-  public UsuarioModel(long id, String nome, String foto, String usuario, String senha) {
+  public UsuarioModel(long id, String nome, String foto, String tipo, String usuario, String senha) {
     this.id = id;
     this.nome = nome;
     this.foto = foto;
+    this.tipo = tipo;
     this.usuario = usuario;
     this.senha = senha;
   }
@@ -84,6 +87,14 @@ public class UsuarioModel {
 
   public void setFoto(String foto) {
     this.foto = foto;
+  }
+
+  public String getTipo() {
+    return this.tipo;
+  }
+
+  public void setTipo(String tipo) {
+    this.tipo = tipo;
   }
 
   public String getUsuario() {
