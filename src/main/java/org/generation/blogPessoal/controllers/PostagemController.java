@@ -88,7 +88,7 @@ public class PostagemController {
 	 * @version 1.0
 	 * @param postagem
 	 */
-	@PostMapping("/cadastrar")
+	@PostMapping
 	public ResponseEntity<PostagemModel> post(@Valid @RequestBody PostagemModel postagem) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(repository.save(postagem));
@@ -102,7 +102,7 @@ public class PostagemController {
 	 * @version 1.0
 	 * @param postagem
 	 */
-	@PutMapping("/atualizar")
+	@PutMapping
 	public ResponseEntity<PostagemModel> put(@Valid @RequestBody PostagemModel postagem) {
 		return repository.findById(postagem.getId())
 				.map(resp -> ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem)))

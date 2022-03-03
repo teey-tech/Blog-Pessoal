@@ -88,7 +88,7 @@ public class TemaController {
 	 * @version 1.0
 	 * @param tema
 	 */
-	@PostMapping("/cadastrar")
+	@PostMapping
 	public ResponseEntity<TemaModel> post(@Valid @RequestBody TemaModel tema) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(repository.save(tema));
