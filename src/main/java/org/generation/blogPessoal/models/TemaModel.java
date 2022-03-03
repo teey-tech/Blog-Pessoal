@@ -1,5 +1,6 @@
 package org.generation.blogPessoal.models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * Creating Model Tema.
@@ -33,6 +36,9 @@ public class TemaModel {
 	@NotNull(message = "O atributo Descrição é obrigatório")
 	private String descricao;
 
+	@UpdateTimestamp
+	private LocalDate dataCadasto;
+
 	@OneToMany(mappedBy = "tema", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("tema")
 	private List<PostagemModel> postagem;
@@ -51,6 +57,14 @@ public class TemaModel {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public LocalDate getDataCadasto() {
+		return this.dataCadasto;
+	}
+
+	public void setDataCadasto(LocalDate dataCadasto) {
+		this.dataCadasto = dataCadasto;
 	}
 
 	public List<PostagemModel> getPostagem() {
