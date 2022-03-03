@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -33,11 +33,8 @@ public class TemaModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull(message = "O atributo Descrição é obrigatório")
+	@NotBlank(message = "O atributo Descrição é obrigatório")
 	private String descricao;
-
-	@UpdateTimestamp
-	private LocalDate dataCadasto;
 
 	@OneToMany(mappedBy = "tema", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("tema")
@@ -57,14 +54,6 @@ public class TemaModel {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public LocalDate getDataCadasto() {
-		return this.dataCadasto;
-	}
-
-	public void setDataCadasto(LocalDate dataCadasto) {
-		this.dataCadasto = dataCadasto;
 	}
 
 	public List<PostagemModel> getPostagem() {
