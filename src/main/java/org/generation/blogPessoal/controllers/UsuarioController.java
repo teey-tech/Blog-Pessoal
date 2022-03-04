@@ -50,7 +50,7 @@ public class UsuarioController {
    * @version 1.0
    * @see UsuariosModel
    */
-  @GetMapping("/all")
+  @GetMapping
   public ResponseEntity<List<UsuarioModel>> getAll() {
     return ResponseEntity.ok(repository.findAll());
   }
@@ -66,9 +66,8 @@ public class UsuarioController {
    */
   @GetMapping("/{id}")
   public ResponseEntity<UsuarioModel> getById(@PathVariable long id) {
-    return repository.findById(id)
-        .map(resp -> ResponseEntity.ok(resp))
-        .orElse(ResponseEntity.notFound().build());
+    return repository.findById(id).map(resp -> ResponseEntity.ok(resp))
+        .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
   }
 
   /**
@@ -115,7 +114,7 @@ public class UsuarioController {
    * @see UsuarioService
    * @param usuario
    */
-  @PutMapping("/atualizar")
+  @PutMapping
   public ResponseEntity<UsuarioModel> putUsuario(@Valid @RequestBody UsuarioModel usuario) {
     return service.atualizarUsuario(usuario)
         .map(resp -> ResponseEntity.status(HttpStatus.OK).body(resp))
